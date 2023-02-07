@@ -14,6 +14,7 @@ public class HelloWorldController {
 	@GetMapping("/index")
 	public String helloWorld2 () {
       System.out.println("ABC");
+      System.out.println("DEF");
 		return "hello world2 test";
 	}
 }
