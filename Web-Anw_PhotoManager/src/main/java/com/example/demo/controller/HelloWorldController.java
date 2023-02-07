@@ -13,6 +13,7 @@ public class HelloWorldController {
 
 	@GetMapping("/index")
 	public String helloWorld2 () {
+      System.out.println("ABC");
 		return "hello world2 test";
 	}
 }
