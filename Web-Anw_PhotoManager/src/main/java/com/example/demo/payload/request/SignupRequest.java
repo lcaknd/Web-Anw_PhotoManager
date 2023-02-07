@@ -12,9 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class SignupRequest {
 
-  @NotBlank private String username;
+    @NotBlank
+    private String username;
 
-  @NotBlank private String password;
+    @NotBlank
+    private String password;
 
-  private Set<String> role;
+    private Set<String> role;
 }

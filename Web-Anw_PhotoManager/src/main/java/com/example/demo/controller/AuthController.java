@@ -15,15 +15,16 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-  @Autowired AuthService authService;
+    @Autowired
+    AuthService authService;
 
-  @PostMapping("/sign-in")
-  public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest request) {
-    return ResponseEntity.ok(authService.authenticateUser(request));
-  }
+    @PostMapping("/sign-in")
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.authenticateUser(request));
+    }
 
-  @PostMapping("/sign-up")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
-    return authService.registerUser(request);
-  }
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
+        return authService.registerUser(request);
+    }
 }

@@ -14,28 +14,28 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(
-    name = "users",
-    uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+      name = "users",
+      uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class User {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 20)
-  private String username;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
-  @NotBlank
-  @Size(max = 120)
-  private String password;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "role_id")
-  private Set<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Set<Role> roles;
 
-  public User(String username, String password) {
-    this.username = username;
-    this.password = password;
-  }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

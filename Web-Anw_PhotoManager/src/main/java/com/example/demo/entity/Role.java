@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 @Table(name = "roles")
 public class Role {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Enumerated(EnumType.STRING)
-  private ERole name;
+    @Enumerated(EnumType.STRING)
+    private ERole name;
 }
