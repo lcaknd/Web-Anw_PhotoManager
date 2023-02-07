@@ -12,6 +12,7 @@ import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
+
+    private static final String EXIST_USER_NAME = "201";
+
+    private static final String USER_REGISTERED_SUCCESSFULLY = "200";
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -62,8 +67,8 @@ public class AuthService {
 
     public ResponseEntity<?> registerUser(SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest()
-                  .body(new MessageResponse("ERROR: Username is already exist!"));
+            return new ResponseEntity<>(new MessageResponse(EXIST_USER_NAME, "ERROR: Username is already exist!"),
+                  HttpStatus.BAD_REQUEST);
         }
 
         User user = new User(request.getUsername(), encoder.encode(request.getPassword()));
@@ -98,6 +103,6 @@ public class AuthService {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY, "User registered successfully!"));
     }
 }
