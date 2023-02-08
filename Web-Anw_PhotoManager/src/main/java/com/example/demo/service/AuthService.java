@@ -30,9 +30,11 @@ import java.util.stream.Collectors;
 @Service
 public class AuthService {
 
-    private static final String EXIST_USER_NAME = "201";
+    private static final String EXIST_USER_NAME = "400";
 
     private static final String USER_REGISTERED_SUCCESSFULLY = "200";
+
+    private static final String USER_LOGIN_SUCCESSFULLY = "200";
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -49,7 +51,7 @@ public class AuthService {
     @Autowired
     PasswordEncoder encoder;
 
-    public JwtResponse authenticateUser(LoginRequest request) {
+    public MessageResponse authenticateUser(LoginRequest request) {
         Authentication authentication =
               authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -62,12 +64,13 @@ public class AuthService {
               userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-        return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles);
+        return new MessageResponse(USER_LOGIN_SUCCESSFULLY, new JwtResponse(jwt, userDetails.getId(),
+              userDetails.getUsername(), roles), "User login successfully!");
     }
 
-    public ResponseEntity<?> registerUser(SignupRequest request) {
+    public ResponseEntity<MessageResponse> registerUser(SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            return new ResponseEntity<>(new MessageResponse(EXIST_USER_NAME, "ERROR: Username is already exist!"),
+            return new ResponseEntity<>(new MessageResponse(EXIST_USER_NAME, "Username is already exist!"),
                   HttpStatus.BAD_REQUEST);
         }
 
@@ -78,7 +81,7 @@ public class AuthService {
             Role userRole =
                   roleRepository
                         .findByName(ERole.USER)
-                        .orElseThrow(() -> new RuntimeException("ERROR: Role is not found"));
+                        .orElseThrow(() -> new RuntimeException("Role is not found"));
             roles.add(userRole);
         } else {
             request
@@ -89,13 +92,13 @@ public class AuthService {
                                 Role adminRole =
                                       roleRepository
                                             .findByName(ERole.ADMIN)
-                                            .orElseThrow(() -> new RuntimeException("ERROR: Role is not found"));
+                                            .orElseThrow(() -> new RuntimeException("Role is not found"));
                                 roles.add(adminRole);
                             } else {
                                 Role userRole =
                                       roleRepository
                                             .findByName(ERole.USER)
-                                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                                            .orElseThrow(() -> new RuntimeException("Role is not found."));
                                 roles.add(userRole);
                             }
                         });
@@ -103,6 +106,7 @@ public class AuthService {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY, "User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY, userRepository.save(user),
+              "User registered successfully!"));
     }
 }
