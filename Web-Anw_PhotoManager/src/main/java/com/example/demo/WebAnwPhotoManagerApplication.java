@@ -30,7 +30,7 @@ public class WebAnwPhotoManagerApplication {
                 repo.save(new Role(ERole.ADMIN));
             };
         return args -> {
-          logger.info("RUNNING....");
+            logger.info("RUNNING....");
         };
     }
 }
