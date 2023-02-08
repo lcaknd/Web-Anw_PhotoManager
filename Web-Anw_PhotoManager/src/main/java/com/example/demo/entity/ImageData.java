@@ -19,6 +19,7 @@ public class ImageData {
     private Long id;
 
     private String name;
+
     private String type;
 
     @Lob
