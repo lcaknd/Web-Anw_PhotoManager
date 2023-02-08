@@ -88,7 +88,7 @@ public class AuthService {
                   .getRole()
                   .forEach(
                         role -> {
-                            if ("admin".equals(role)) {
+                            if ("admin".equalsIgnoreCase(role)) {
                                 Role adminRole =
                                       roleRepository
                                             .findByName(ERole.ADMIN)
